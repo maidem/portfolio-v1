@@ -2,7 +2,7 @@
 namespace Deployer;
 
 // ---------------------------------------------------------
-// TYPO3 Basis-Recipe laden (liefert Standard-Tasks)
+// Basis-Recipe (Deployer-Standard)
 // ---------------------------------------------------------
 require 'recipe/common.php';
 
@@ -16,12 +16,11 @@ set('branch', function () {
 });
 
 set('bin/php', '/usr/bin/php8.3');
-set('ssh_private_key', getenv('DEPLOY_SSH_KEY'));
 set('allow_anonymous_stats', false);
 set('keep_releases', 5);
 
 // ---------------------------------------------------------
-// Shared + Writable (persistente Dateien & Ordner)
+// Shared + Writable Dateien / Ordner
 // ---------------------------------------------------------
 set('shared_dirs', [
     'config/sites',
@@ -46,15 +45,23 @@ set('writable_dirs', [
 ]);
 
 // ---------------------------------------------------------
-// Ziel-Host Konfiguration
+// Ziel-Host
 // ---------------------------------------------------------
 host('live')
-    ->set('hostname', getenv('DEPLOY_HOST') ?: 'example.com')
-    ->set('remote_user', getenv('DEPLOY_SSH_USER') ?: 'deploy')
+    ->set('hostname', getenv('DEPLOY_HOST'))
+    ->set('remote_user', getenv('DEPLOY_SSH_USER'))
     ->set('deploy_path', getenv('DEPLOY_PATH') ?: '/var/www/maidem.de');
 
 // ---------------------------------------------------------
-// TYPO3 Cache leeren (eigener Task, da kein offizieller vorhanden)
+// Composer installieren (nach Code-Update)
+// ---------------------------------------------------------
+desc('Install composer dependencies');
+task('deploy:composer', function () {
+    run('{{bin/php}} {{release_path}}/composer.phar install --no-dev --prefer-dist --no-interaction');
+})->once();
+
+// ---------------------------------------------------------
+// TYPO3 Cache leeren (eigener Task)
 // ---------------------------------------------------------
 desc('Flush TYPO3 cache');
 task('typo3:cache:flush', function () {
@@ -62,7 +69,7 @@ task('typo3:cache:flush', function () {
 });
 
 // ---------------------------------------------------------
-// Dateiberechtigungen setzen (robust gegen Fehler)
+// Berechtigungen setzen
 // ---------------------------------------------------------
 desc('Set correct permissions');
 task('fix:permissions', function () {
@@ -84,17 +91,17 @@ task('fix:permissions', function () {
 });
 
 // ---------------------------------------------------------
-// Hooks (Reihenfolge der Tasks)
+// Automatische Aufgaben-Reihenfolge (Hooks)
 // ---------------------------------------------------------
-after('deploy:prepare', 'fix:permissions');
-after('deploy:vendors', 'fix:permissions');
-after('deploy:symlink', 'typo3:cache:flush');
-after('deploy:symlink', 'fix:permissions');
-after('deploy:success', 'fix:permissions');
-after('deploy:failed', 'deploy:unlock');
+after('deploy:update_code', 'deploy:composer');   // Composer nach Code-Update
+after('deploy:shared', 'fix:permissions');        // Rechte nach shared-Files
+after('deploy:symlink', 'typo3:cache:flush');     // Cache nach Symlink
+after('deploy:symlink', 'fix:permissions');       // Rechte final prüfen
+after('deploy:success', 'fix:permissions');       // Rechte nach Erfolg
+after('deploy:failed', 'deploy:unlock');          // Unlock bei Fehler
 
 // ---------------------------------------------------------
-// Rollback-Task (schnelles Zurückrollen auf vorheriges Release)
+// Rollback
 // ---------------------------------------------------------
 desc('Rollback to previous release');
 task('rollback', function () {
