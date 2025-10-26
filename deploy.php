@@ -2,9 +2,9 @@
 namespace Deployer;
 
 // ---------------------------------------------------------
-// TYPO3-Recipe laden (liefert Standard-Tasks für TYPO3)
+// TYPO3 Basis-Recipe laden (liefert Standard-Tasks)
 // ---------------------------------------------------------
-require 'recipe/typo3.php';
+require 'recipe/common.php';
 
 // ---------------------------------------------------------
 // Projekt-Konfiguration
@@ -21,7 +21,7 @@ set('allow_anonymous_stats', false);
 set('keep_releases', 5);
 
 // ---------------------------------------------------------
-// Geteilte Dateien & Verzeichnisse (persistente Daten)
+// Shared + Writable (persistente Dateien & Ordner)
 // ---------------------------------------------------------
 set('shared_dirs', [
     'config/sites',
@@ -46,7 +46,7 @@ set('writable_dirs', [
 ]);
 
 // ---------------------------------------------------------
-// Host-Konfiguration (Variablen kommen aus GitHub-Secrets)
+// Ziel-Host Konfiguration
 // ---------------------------------------------------------
 host('live')
     ->set('hostname', getenv('DEPLOY_HOST') ?: 'example.com')
@@ -54,7 +54,15 @@ host('live')
     ->set('deploy_path', getenv('DEPLOY_PATH') ?: '/var/www/maidem.de');
 
 // ---------------------------------------------------------
-// Dateiberechtigungen (tolerant gegen Fehler)
+// TYPO3 Cache leeren (eigener Task, da kein offizieller vorhanden)
+// ---------------------------------------------------------
+desc('Flush TYPO3 cache');
+task('typo3:cache:flush', function () {
+    run('{{bin/php}} {{release_path}}/vendor/bin/typo3 cache:flush || true');
+});
+
+// ---------------------------------------------------------
+// Dateiberechtigungen setzen (robust gegen Fehler)
 // ---------------------------------------------------------
 desc('Set correct permissions');
 task('fix:permissions', function () {
@@ -76,17 +84,17 @@ task('fix:permissions', function () {
 });
 
 // ---------------------------------------------------------
-// Reihenfolge / Hooks
+// Hooks (Reihenfolge der Tasks)
 // ---------------------------------------------------------
 after('deploy:prepare', 'fix:permissions');
-after('deploy:vendors', 'typo3:cache:flush');
+after('deploy:vendors', 'fix:permissions');
 after('deploy:symlink', 'typo3:cache:flush');
 after('deploy:symlink', 'fix:permissions');
 after('deploy:success', 'fix:permissions');
 after('deploy:failed', 'deploy:unlock');
 
 // ---------------------------------------------------------
-// Rollback-Task
+// Rollback-Task (schnelles Zurückrollen auf vorheriges Release)
 // ---------------------------------------------------------
 desc('Rollback to previous release');
 task('rollback', function () {
