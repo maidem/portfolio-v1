@@ -1,0 +1,11 @@
+{
+  "packages/portfolio_v1/Resources/Private/Main.entry.js": {
+    "file": "assets/Main.entry-BOfblN9t.js",
+    "name": "Main.entry",
+    "src": "packages/portfolio_v1/Resources/Private/Main.entry.js",
+    "isEntry": true,
+    "css": [
+      "assets/Main-CF1eGSMM.css"
+    ]
+  }
+}

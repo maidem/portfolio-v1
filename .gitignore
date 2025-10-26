@@ -1,0 +1,19 @@
+.DS_Store
+.idea
+.vscode
+nbproject
+/var/*
+!/var/labels
+/vendor
+/public/*
+
+# nur _assets/vite soll tracked werden
+!/public/_assets/
+!/public/_assets/vite/
+!/public/_assets/vite/**
+
+# alle anderen Inhalte in _assets ignorieren
+/public/_assets/*
+!/public/_assets/vite/
+
+node_modules/

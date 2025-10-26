@@ -1,0 +1,19 @@
+base: /
+dependencies:
+  - maidem/portfolio-v1
+  - typo3/fluid-styled-content
+  - typo3/fluid-styled-content-css
+  - typo3/form
+languages:
+  -
+    title: German
+    enabled: true
+    locale: de_DE.utf8
+    hreflang: ''
+    base: /
+    websiteTitle: ''
+    navigationTitle: ''
+    flag: de
+    languageId: 0
+rootPageId: 1
+websiteTitle: ''

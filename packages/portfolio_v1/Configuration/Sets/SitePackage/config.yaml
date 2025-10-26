@@ -1,0 +1,5 @@
+name: maidem/portfolio-v1
+label: 'Portfolio-v1'
+dependencies:
+  - typo3/fluid-styled-content
+  - typo3/fluid-styled-content-css

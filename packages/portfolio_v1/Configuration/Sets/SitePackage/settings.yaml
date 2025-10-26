@@ -1,0 +1,28 @@
+styles:
+  templates:
+    layoutRootPath: 'EXT:portfolio_v1/Resources/Private/ContentElements/Layouts/'
+    partialRootPath: 'EXT:portfolio_v1/Resources/Private/ContentElements/Partials/'
+    templateRootPath: 'EXT:portfolio_v1/Resources/Private/ContentElements/Templates/'
+
+page:
+  pageview:
+    paths: 'EXT:portfolio_v1/Resources/Private/PageView/'
+
+  meta:
+    viewport: 'width=device-width, initial-scale=1'
+    robots: 'index,follow'
+    apple-mobile-web-app-capable: 'no'
+    compatible: 'IE=edge'
+
+  tracking:
+    google:
+      trackingID: ''
+      anonymizeIp: '1'
+
+config:
+  no_cache: '0'
+  removeDefaultJS: '0'
+  admPanel: '1'
+  prefixLocalAnchors: 'all'
+  headerComment: 'build by get.typo3.org/sitepackage'
+  sendCacheHeaders: '1'
