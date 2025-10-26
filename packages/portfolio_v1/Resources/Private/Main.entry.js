@@ -1,1 +1,1 @@
-import "../Public/Css/layout.css";
+import "../Public/Scss/layout.scss";

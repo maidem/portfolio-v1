@@ -43,7 +43,7 @@ page {
     }
 
     includeCSS {
-        portfolio_v1_layout = EXT:portfolio_v1/Resources/Public/Css/layout.css
+        
     }
 
     includeJSLibs {
@@ -59,6 +59,6 @@ page {
     }
 
     includeJSFooter {
-        portfolio_v1_scripts = EXT:portfolio_v1/Resources/Public/JavaScript/main.js
+        
     }
 }
