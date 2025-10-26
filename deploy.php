@@ -79,7 +79,7 @@ task('fix:permissions', function () {
 // Reihenfolge / Hooks
 // ---------------------------------------------------------
 after('deploy:prepare', 'fix:permissions');
-after('deploy:vendors', 'deploy:cache:clear');
+after('deploy:vendors', 'typo3:cache:flush');
 after('deploy:symlink', 'typo3:cache:flush');
 after('deploy:symlink', 'fix:permissions');
 after('deploy:success', 'fix:permissions');
