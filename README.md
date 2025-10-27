@@ -61,6 +61,6 @@ to be used for development.
 - [Getting Started with TYPO3](https://docs.typo3.org/permalink/t3start:start)
 - [Create a Site Package](https://docs.typo3.org/permalink/t3sitepackage:start)
 
-## License
+## License!
 
 GPL-2.0 or later
