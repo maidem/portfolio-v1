@@ -21,6 +21,10 @@ set('keep_releases', 5);
 // Zusätzliche projektspezifische Konfiguration
 // ---------------------------------------------------------
 add('shared_dirs', [
+    'public/fileadmin',
+    'public/typo3temp/assets',
+    'public/typo3temp/pics',
+    'var',
     'config/sites',
 ]);
 
@@ -28,6 +32,8 @@ add('shared_files', [
     'config/system/additional.php',
     'public/.htaccess',
     'public/.user.ini',
+    '.env',
+    'public/robots.txt',
 ]);
 
 // ---------------------------------------------------------
