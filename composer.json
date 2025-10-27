@@ -16,7 +16,6 @@
 	"require": {
 		"maidem/portfolio-v1": "@dev",
 		"praetorius/vite-asset-collector": "^1.14",
-		"symfony/dotenv": "^7.3",
 		"typo3/cms-backend": "^13.4",
 		"typo3/cms-belog": "^13.4",
 		"typo3/cms-beuser": "^13.4",
